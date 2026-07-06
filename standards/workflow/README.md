@@ -8,6 +8,7 @@
 - **`roadmap-template.md`** — живой статус-файл: один источник правды «где всё сейчас». Копия в каждом репо + сводная в commons.
 - **`docs-hygiene.md`** — один источник на тему, `superseded`-пометки, без дата-археологии.
 - **`git-scope.md`** — scope коммита/PR = форма изменения (per-package / per-feature / cross-repo через контракт).
+- **`commit-cadence.md`** — когда коммитим (этапность: проверка→коммит) + pre-commit гейт (test+lint+build зелёные) + тайминг PR.
 
 ## Принцип
 
