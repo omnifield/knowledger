@@ -20,7 +20,7 @@
 - `namespaces.md` — nested по структуре папок (`widgets/forms/auth` → `Widgets.Forms.Auth`).
 
 ### `packages/` — модель пакета
-- `anatomy.md` — **пакет = апп минус Page/Feature**; 3 яруса `core/ modules/ shared/`; направление импортов `modules→core→shared`.
+- `anatomy.md` — **пакет = апп минус Page/Feature**; слои-папки `core/ entities/ views/ shapes/ widgets/ controllers/`; узкий barrel `web-core/wrappers` (без Page/Feature).
 - `ownership.md` — owner-зоны, OWNERSHIP.md, releasability, границы.
 - `dependency-tiers.md` — **portable-tier**: пакеты «в мир» с нулём ecosystem-deps (renderer/canvas/utils); их могут импортить наши, они наших — нет; CI enforce.
 
