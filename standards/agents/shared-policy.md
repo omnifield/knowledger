@@ -8,24 +8,24 @@ Cross-cutting правила для любого агента (architect / owner
 - Задача требует правок в чужой зоне:
   - **Тривиально** (typo, missing export, stale ref, bump до next minor) — запроси fix через `Agent(subagent_type='owner-<zone>')`, опиши конкретно.
   - **Нетривиально** (новый API, refactor, breaking, дизайн) — НЕ ЛЕЗЬ. Эскалируй: «для X нужно Y в зоне Z; делегировать owner-Z». Решает architect репо.
-- Cross-repo концерн → **контракт** в `commons/contracts`, не переброс брифами ([[../canon/packages/ownership]]).
+- Cross-repo концерн → **контракт** в `commons/contracts`, не переброс брифами ([ownership](../canon/packages/ownership.md)).
 
 ## 2. Доки (часть DoD)
 
 - После изменения — синхронизируй: AI-anchor (`docs/_meta/<zone>.md`) + user-guide (где применимо) + per-zone README.
-- Нет доки — создай; протухла — почини; старое помечай `superseded` ([[../workflow/docs-hygiene]]).
+- Нет доки — создай; протухла — почини; старое помечай `superseded` ([docs-hygiene](../workflow/docs-hygiene.md)).
 - Канон **не дублируется** в prompt: owner ссылается на AI-anchor как single source of truth, обновляет anchor — не копирует контент.
 
 ## 3. Тесты + трейсы (DoD)
 
-- **Definition of done** = код + тесты + трейсы + доки + раскладка ([[../canon/principles/etalon-gate]]).
+- **Definition of done** = код + тесты + трейсы + доки + раскладка ([etalon-gate](../canon/principles/etalon-gate.md)).
 - Pure-логика — unit (vitest, node); DOM/Solid — jsdom. Баг → сначала характеризационный тест (repro), потом fix.
 - Не тестируемо изолированно (только реальный браузер) — задокументируй почему в тесте-плейсхолдере; закрытие через browser-eyeball product owner'а.
-- Трейсы = инструментирование perf-логгерами ([[../canon/principles/etalon-gate]]), не «допишем позже».
+- Трейсы = инструментирование perf-логгерами ([etalon-gate](../canon/principles/etalon-gate.md)), не «допишем позже».
 
 ## 4. Commit-каденс + git-роли
 
-- Работа **по этапам**: этап → проверка → коммит; не коммитим непроверенное ([[../workflow/commit-cadence]]).
+- Работа **по этапам**: этап → проверка → коммит; не коммитим непроверенное ([commit-cadence](../workflow/commit-cadence.md)).
 - **Pre-commit гейт** — test+lint+build зелёные ПЕРЕД коммитом.
 - **Git-роли** (per-repo механика — hooks/marker, но канон общий):
   - **Architect (main-сессия)** — полный git (commit/push/merge).
@@ -36,7 +36,7 @@ Cross-cutting правила для любого агента (architect / owner
 ## 5. Cross-zone контекст (owner)
 
 - Owner знает свою **release-группу** и **consumer'ов** своей зоны. Изменение публичного API без согласования с consumer'ом — нет.
-- Сомнение — спроси architect'а, не делай sweeping refactor «на удачу» ([[../canon/principles/root-cause-not-symptom]]).
+- Сомнение — спроси architect'а, не делай sweeping refactor «на удачу» ([root-cause-not-symptom](../canon/principles/root-cause-not-symptom.md)).
 
 ## 6. Стиль
 

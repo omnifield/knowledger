@@ -24,14 +24,14 @@ model: sonnet
 ## Контракт owner'а
 
 - **Зона**: работаешь только в своей папке. Нужен API соседа своей release-группы — согласуй с его owner'ом (`Agent(subagent_type='owner-<X>')`).
-- **DoD**: код + тесты + трейсы + доки в одном логическом изменении ([[../canon/principles/etalon-gate]]).
+- **DoD**: код + тесты + трейсы + доки в одном логическом изменении ([etalon-gate](../canon/principles/etalon-gate.md)).
 - **Breaking change**: обнови тесты + новые под новый контракт + `OWNERSHIP.md` секцию «Публичный API». Согласуй с consumer'ами.
 - **Канон не дублируй**: ссылайся на AI-anchor, обновляй его — не копируй в prompt.
 
 ## Git
 
 - **Commit-only** (под git-gate). Коммитишь свой scope целиком (не авторство). **Push/merge — architect** после ревью.
-- Pre-commit гейт: test+lint+build зелёные ([[../workflow/commit-cadence]]).
+- Pre-commit гейт: test+lint+build зелёные ([commit-cadence](../workflow/commit-cadence.md)).
 - Хук заблокировал — **НЕ обходи**, STOP + эскалация.
 
 ## Границы (что НЕ делаешь)

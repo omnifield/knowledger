@@ -11,6 +11,7 @@
 - `modules-no-crutches.md` — модули не монолит; независимость; совместимость дизайном.
 - `root-cause-not-symptom.md` — лечим причину; стоп-сигналы костыля.
 - `etalon-gate.md` — «готово» = код+тесты+трейсы+доки+раскладка.
+- `types-from-zod.md` — типы только из zod (`z.infer`); ноль ручных `interface`/`type` под домен на любом уровне (app/package/contract).
 
 ### `architecture/` — HCA «как устроено»
 Слои, обёртки, механики, правила импорта.
@@ -36,5 +37,5 @@
 
 ## Порт-статус
 
-🔵 = вычитано из оракула `capsule` (CLAUDE.md, docs/01-architecture, docs/_meta), доведено до эталона.
-Наполняется послойно при миграции соответствующего пакета — канон едет **вперёд** пакета (enforcement первым, [[canon-first]]).
+🔵 = вычитано из оракула (v1-репо: CLAUDE.md, docs/01-architecture, docs/_meta), доведено до эталона.
+Наполняется послойно при миграции соответствующего пакета — канон едет **вперёд** пакета (enforcement первым, см. [Canon-first](compliance/golden-rules.md#canon-first)).

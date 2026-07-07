@@ -30,5 +30,5 @@
 
 - **Cross-package change** — не лезть в чужой пакет; делегировать через architect'а репо, который вызовет нужного owner'а.
 - **Shared infra** (release-скрипты, root-конфиг, nx.json) — делает architect репо.
-- **Releasability** — свойство модульности: пакет релизится/версионируется/обновляется независимо ([[../principles/modules-no-crutches]]). Owner-зона = граница releasability.
-- **Scope коммита = зона целиком**, не авторство ([[../../workflow/git-scope]]): owner коммитит всё, что попало в его scope, независимо кто строки писал.
+- **Releasability** — свойство модульности: пакет релизится/версионируется/обновляется независимо ([modules-no-crutches](../principles/modules-no-crutches.md)). Owner-зона = граница releasability.
+- **Scope коммита = зона целиком**, не авторство ([git-scope](../../workflow/git-scope.md)): owner коммитит всё, что попало в его scope, независимо кто строки писал.

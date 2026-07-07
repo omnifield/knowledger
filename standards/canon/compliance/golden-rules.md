@@ -1,15 +1,15 @@
 # Golden Rules — правила + severity
 
-Правила канона, которые **enforced линтером** ([[linter]]). Формулировки слоёв — [[../architecture/import-rules]]; здесь — severity-модель.
+Правила канона, которые **enforced линтером** ([linter](linter.md)). Формулировки слоёв — [import-rules](../architecture/import-rules.md); здесь — severity-модель.
 
 ## Правила
 
 1. **No Upward Imports** — нижний слой не импортит верхний.
 2. **No Horizontal Imports** — `View.A` ⊥ `View.B`, `Controller.A` ⊥ `Controller.B`; связь только через Widget/`next()`.
-3. **Stateless View / Shape** — без состояния, без импортов кроме Solid и типов.
+3. **Stateless View / Shape** — без состояния, ноль явных импортов (JSX-рантайм авто); ноль ручных `type`/`interface` на уровне аппа — типы только из zod-Entity, глобальных деклараций или vendor ([types-from-zod](../principles/types-from-zod.md)).
 4. **Composition Only in Widgets** — склейка сущностей только на уровне Widget.
 
-Плюс структурные границы: no app-package runtime-import, no disallowed external dep в слое, no cross-zone impl-import, portable-tier ⊥ ecosystem ([[../packages/dependency-tiers]]).
+Плюс структурные границы: no app-package runtime-import, no disallowed external dep в слое, no cross-zone impl-import, portable-tier ⊥ ecosystem ([dependency-tiers](../packages/dependency-tiers.md)).
 
 ## Severity — два класса
 
@@ -26,4 +26,4 @@ Override per-call: `check(path, code, { severity: { 'app-package-import': 'warn'
 
 ## Canon-first
 
-Линтер-правило заводится **ДО** app-кода, который оно защищает ([[../principles/root-cause-not-symptom]] — enforcement первым). Иначе канон держится на дисциплине памяти, а не на машине.
+Линтер-правило заводится **ДО** app-кода, который оно защищает ([root-cause-not-symptom](../principles/root-cause-not-symptom.md) — enforcement первым). Иначе канон держится на дисциплине памяти, а не на машине.
