@@ -18,4 +18,4 @@
 
 ## Почему
 
-Studio-рендерер строит UI по JSON-схеме + Registry (компоненты по dot-path `ui.Button`). Manifest даёт studio редактируемую модель, namespace — исполняемую. Два слоя = компонент одинаково доступен и в коде (проксированный `Ui`), и в визуальном редакторе. Связь: [[component-model]] (композиция в kit), [[../architecture/ui-proxy-tag-flow]] (namespace → event-flow).
+Studio-рендерер строит UI по JSON-схеме + Registry (компоненты по dot-path `ui.Button`). Manifest даёт studio редактируемую модель, namespace — исполняемую. Два слоя = компонент одинаково доступен и в коде (проксированный `Ui`), и в визуальном редакторе. Связь: [component-model](component-model.md) (композиция в kit), [ui-proxy-tag-flow](../architecture/ui-proxy-tag-flow.md) (namespace → event-flow).

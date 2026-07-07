@@ -14,8 +14,8 @@
 
 ## Почему
 
-Пакет, который мы отдаём наружу (или хотим отдать), с корнем в нашу экосистему — не переносим: потребитель тянет весь `@omnifield/*` хвост. Portable-tier = чистая граница: self-contained, zero-ecosystem, тестируется и публикуется без остального монорепо. Это частный, самый жёсткий случай [[../principles/modules-no-crutches]].
+Пакет, который мы отдаём наружу (или хотим отдать), с корнем в нашу экосистему — не переносим: потребитель тянет весь `@omnifield/*` хвост. Portable-tier = чистая граница: self-contained, zero-ecosystem, тестируется и публикуется без остального монорепо. Это частный, самый жёсткий случай [modules-no-crutches](../principles/modules-no-crutches.md).
 
 ## Enforcement
 
-CI-gate (линтер / dep-cruise) режет `@omnifield/*`-импорт внутри portable-tier пакета. Нарушение — structural error, валит пайплайн ([[../compliance/golden-rules]]). Список portable-пакетов — явный, ведётся в конфиге линтера.
+CI-gate (линтер / dep-cruise) режет `@omnifield/*`-импорт внутри portable-tier пакета. Нарушение — structural error, валит пайплайн ([golden-rules](../compliance/golden-rules.md)). Список portable-пакетов — явный, ведётся в конфиге линтера.

@@ -2,7 +2,7 @@
 
 **HCA (Hyper-Controlled Architecture)**, философия *«UI is a Shadow»* — интерфейс это немая проекция логики; вся власть в Controller/Feature, общение с UI идёт через Proxy и meta-теги.
 
-Слои снизу вверх. Запрещены **upward** и **horizontal** импорты ([[import-rules]]). Любая композиция между сущностями — только в Widget.
+Слои снизу вверх. Запрещены **upward** и **horizontal** импорты ([import-rules](import-rules.md)). Любая композиция между сущностями — только в Widget.
 
 | Слой | Папка | Что это | Обёртка |
 |---|---|---|---|
@@ -30,7 +30,7 @@
 
 ## Что param vs global
 
-- **`Ui`** (UI-kit примитивы) — приходит **первым параметром** обёртки. Per-instance проксированная копия под текущий `ControllerContext` (event-binding, meta-registration). Разные ref у разных instance'ов. См. [[ui-proxy-tag-flow]].
+- **`Ui`** (UI-kit примитивы) — приходит **первым параметром** обёртки. Per-instance проксированная копия под текущий `ControllerContext` (event-binding, meta-registration). Разные ref у разных instance'ов. См. [ui-proxy-tag-flow](ui-proxy-tag-flow.md).
 - **`Views/Widgets/Shapes/Controllers/Features/Entities`** — **глобалы** (один stable ref на приложение). Доступны прямо из тела фабрики без объявления в args.
 - **`useCtx`** — глобал; в Views/Widgets даёт доступ к `ControllerContext` (reactive store).
 - **`services`** (Controller/Feature) — параметр, per-instance (`api`/`store`/`state`, деструктуризация `{ router, utils, <pkg>Api }`).

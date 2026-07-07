@@ -1,6 +1,6 @@
 # Agents — флоу делегирования (шаблоны)
 
-Репо-агностик каноны agent-системы. Каждый репо **наследует** эти шаблоны в свой `.claude/agents/` и допиливает per-repo механику (hooks/git-gate, scope-identity, пины модели). Все агенты первым читают [[shared-policy]].
+Репо-агностик каноны agent-системы. Каждый репо **наследует** эти шаблоны в свой `.claude/agents/` и допиливает per-repo механику (hooks/git-gate, scope-identity, пины модели). Все агенты первым читают [shared-policy](shared-policy.md).
 
 ## Три яруса
 
@@ -26,15 +26,15 @@
 
 | Ярус | Роль | Модель | Git | Шаблон |
 |---|---|---|---|---|
-| **Architect** | триаж/архитектура/координация | opus | полный | [[architect.template]] |
-| **Owner** | full lifecycle зоны | sonnet | commit-only (под gate) | [[owner.template]] |
-| **Layer** | один HCA-артефакт | haiku (ctrl/feat→sonnet) | нет | [[layer.template]] |
+| **Architect** | триаж/архитектура/координация | opus | полный | [architect.template](architect.template.md) |
+| **Owner** | full lifecycle зоны | sonnet | commit-only (под gate) | [owner.template](owner.template.md) |
+| **Layer** | один HCA-артефакт | haiku (ctrl/feat→sonnet) | нет | [layer.template](layer.template.md) |
 
 ## Как вызываются
 
 - **Architect → owner**: бриф-файл (`docs/_meta/briefs/*.md`), owner-сессию запускает product owner (scope-identity) ЛИБО architect спавнит субагента `Agent(subagent_type='owner-<zone>')`.
 - **Architect → layer** (или owner-app → layer): `Agent(subagent_type='<layer>', prompt='...')`; несколько параллельно в одном сообщении, когда задачи независимы.
-- **Owner → owner** (сосед по release-группе, тривиальный fix): `Agent(subagent_type='owner-<X>')` по политике boundaries ([[shared-policy]] §1).
+- **Owner → owner** (сосед по release-группе, тривиальный fix): `Agent(subagent_type='owner-<X>')` по политике boundaries ([shared-policy](shared-policy.md) §1).
 
 ## Что НЕ делегируется субагентам
 
@@ -60,6 +60,6 @@
 
 ## Связанное
 
-- [[shared-policy]] — читают все агенты первым.
-- [[../workflow/git-scope]] · [[../workflow/commit-cadence]] — scope и каденс коммитов.
-- [[../canon/packages/ownership]] — зоны/роли/эскалация (верхний закон).
+- [shared-policy](shared-policy.md) — читают все агенты первым.
+- [git-scope](../workflow/git-scope.md) · [commit-cadence](../workflow/commit-cadence.md) — scope и каденс коммитов.
+- [ownership](../canon/packages/ownership.md) — зоны/роли/эскалация (верхний закон).
