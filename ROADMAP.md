@@ -13,8 +13,8 @@
 | commons foundation-first + toolchain-pins (правила) | Contract | done | commons | — | ✅ | ✅ | `standards/canon/principles/foundation-first.md` |
 | devopser workstation-bootstrap (v1 + амендмент №2 реализованы) | DevOps | doing | devopser | e2e на чистой машине (дыры 1–2 эскалации) | ✅ | ⬜ | devopser `workstation/escalation-bootstrap-gaps.md` |
 | devopser infra-migration (стеки из оракула + registry) | DevOps | ready | devopser | — | ✅ | ⬜ | devopser `briefs/infra-migration.md` |
-| 🕳 brainer fix: config.py реестр от `parents[4]` (path-костыль; тесты зависят от имени папки чекаута) | Backend | ready | brainer | — (дыро-фикс не гейтится) | ✅ | ⬜ | brainer PR#2 §заметки |
-| 🕳 brainer fix: vite port 5173 → 3500 (контракт DEPLOY.md + devopser `registry/ports.md`) | App | ready | brainer | — (дыро-фикс не гейтится) | ✅ | ⬜ | brainer PR#2 §заметки |
+| 🕳 brainer fix: config.py реестр от `parents[4]` (path-костыль; тесты зависят от имени папки чекаута) | Backend | ready | brainer | — (дыро-фикс не гейтится) | ✅ | ⬜ | brainer `briefs/fix-backend-repo-registry.md` |
+| 🕳 brainer fix: vite port 5173 → 3500 (контракт DEPLOY.md + devopser `registry/ports.md`) | App | ready | brainer | — (дыро-фикс не гейтится) | ✅ | ⬜ | brainer `briefs/fix-frontend-port-3500.md` |
 
 ## Очередь запусков (кто, что, после кого)
 
