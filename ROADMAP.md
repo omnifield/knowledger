@@ -13,10 +13,11 @@
 | commons foundation-first + toolchain-pins (правила) | Contract | done | commons | — | ✅ | ✅ | `standards/canon/principles/foundation-first.md` |
 | devopser workstation-bootstrap (v1 + амендмент №2 реализованы) | DevOps | doing | devopser | e2e на чистой машине (дыры 1–2 эскалации) | ✅ | ⬜ | devopser `workstation/escalation-bootstrap-gaps.md` |
 | devopser infra-migration (стеки из оракула + registry) | DevOps | ready | devopser | — | ✅ | ⬜ | devopser `briefs/infra-migration.md` |
-| 🕳 brainer: разгрести shared tree (устаревшая ветка + смешанный WIP двух owner'ов) | DevOps | ready | brainer | — | ✅ | ⬜ | инцидент 2026-07-08, foundation-first прецедент №3 |
+| 🕳 brainer: разгрести shared tree (устаревшая ветка + смешанный WIP двух owner'ов) | DevOps | done | brainer | — | ✅ | ✅ | main чист/синхронен, WIP спасён в `fix/`-ветки (обе на origin) |
 | 🕳 brainer fix: config.py реестр от `parents[4]` (path-костыль; тесты зависят от имени папки чекаута) | Backend | ready | brainer | очередь WIP=1 (№3) | ✅ | ⬜ | brainer `briefs/fix-backend-repo-registry.md` |
 | 🕳 brainer fix: vite port 5173 → 3500 (контракт DEPLOY.md + devopser `registry/ports.md`) | App | ready | brainer | очередь WIP=1 (№4) | ✅ | ⬜ | brainer `briefs/fix-frontend-port-3500.md` |
 | 🕳 process: параллельные owner'ы на одном working tree без изоляции | Contract | done | commons | — | ✅ | ✅ | shared-policy §4/4.1 + foundation-first WIP=1 |
+| testing-стандарт (6 принципов; боли v1 зафиксированы) | Contract | proposed | commons | обсуждение user+architect (развилки: win-CI, playwright) | ⬜ | ⬜ | `standards/workflow/testing.md` 🚧 DRAFT |
 
 ## Очередь запусков (кто, что, после кого)
 
