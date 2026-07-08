@@ -6,7 +6,6 @@
 
 **Визуальный индекс канона** (навигация по темам + port-status) — GitHub-борд:
 🔗 https://github.com/orgs/omnifield/projects/2 (текст правил — в файлах ниже, борд — карта).
-**Срез канона per-роль** (что кому знать) — `../agents/canon-map.md` + `../agents/canon-digests/`.
 
 ## Темы
 
