@@ -1,40 +1,36 @@
-# ROADMAP — сводная (cross-repo картина)
+# ROADMAP — живой борд
 
-Один источник правды «где всё сейчас» (`standards/workflow/roadmap-template.md`).
-Обновляется при каждом сдвиге. Вопрос «что сейчас происходит и кто что делает» —
-ответ ЗДЕСЬ, не в переписке.
+Единый источник правды «где всё сейчас» — **GitHub Project**, не этот файл.
+Вопрос «что происходит и кто что делает» — ответ на борде, не в переписке и не в markdown.
 
-## Таблица
+## 🔗 https://github.com/orgs/omnifield/projects/1
 
-| Feature | Stage | Maturity | Owner-repo | Blocked-by | DoR | DoD | Link |
-|---|---|---|---|---|---|---|---|
-| brainer interface-MVP (фронт+бэк против контракта) | App | done | brainer | — | ✅ | ✅ | brainer PR#1 |
-| brainer repo-skeleton (pnpm+nx+uv+CI, эталон продукт-репо) | DevOps | done | brainer | мерж PR#2 (CI зелёный) | ✅ | ✅ | brainer PR#2 |
-| commons foundation-first + toolchain-pins (правила) | Contract | done | commons | — | ✅ | ✅ | `standards/canon/principles/foundation-first.md` |
-| devopser workstation-bootstrap (v1 + амендмент №2 реализованы) | DevOps | doing | devopser | e2e на чистой машине (дыры 1–2 эскалации) | ✅ | ⬜ | devopser `workstation/escalation-bootstrap-gaps.md` |
-| devopser infra-migration (стеки из оракула + registry) | DevOps | ready | devopser | — | ✅ | ⬜ | devopser `briefs/infra-migration.md` |
-| 🕳 brainer: разгрести shared tree (устаревшая ветка + смешанный WIP двух owner'ов) | DevOps | done | brainer | — | ✅ | ✅ | main чист/синхронен, WIP спасён в `fix/`-ветки (обе на origin) |
-| 🕳 brainer fix: config.py реестр от `parents[4]` (path-костыль; тесты зависят от имени папки чекаута) | Backend | ready | brainer | очередь WIP=1 (№3) | ✅ | ⬜ | brainer `briefs/fix-backend-repo-registry.md` |
-| 🕳 brainer fix: vite port 5173 → 3500 (контракт DEPLOY.md + devopser `registry/ports.md`) | App | ready | brainer | очередь WIP=1 (№4) | ✅ | ⬜ | brainer `briefs/fix-frontend-port-3500.md` |
-| 🕳 process: параллельные owner'ы на одном working tree без изоляции | Contract | done | commons | — | ✅ | ✅ | shared-policy §4/4.1 + foundation-first WIP=1 |
-| testing-стандарт (6 принципов; боли v1 зафиксированы) | Contract | proposed | commons | обсуждение user+architect (развилки: win-CI, playwright) | ⬜ | ⬜ | `standards/workflow/testing.md` 🚧 DRAFT |
+Борд поверх всех репо (`brainer` · `commons` · `writer` · `devopser`). Поля = колонки старого roadmap:
 
-## Очередь запусков (кто, что, после кого)
+| Поле | Значения |
+|---|---|
+| `Stage` | `Proposed` · `Ready` · `Doing` · `Blocked` · `Done` |
+| `Layer` | `Contract` · `DevOps` · `Backend` · `App` · `Frontend` |
+| `Repo` | авто из issue |
+| `Queue` | номер в очереди запусков (WIP=1) |
+| `Blocked-by` | ссылка/текст блокера |
+| `DoR` / `DoD` | ✅ met · ⬜ not yet |
 
-Правило чтения: бери верхний item со своей ролью, у которого `Blocked-by` пуст.
-Иерархия базы (foundation-first): дыры devopser гейтят ВСЁ выше — brainer стоит,
-пока workstation DoD не зелёный.
+## Как читать (WIP=1, foundation-first)
 
-**Очередь СТРОГО последовательная (WIP=1, foundation-first): следующий стартует только
-когда предыдущий закрыт. Никаких параллельных сессий ни на одном дереве.**
+- Вид **Board** — канбан по `Stage`; вид **Table** + сортировка по `Queue` — очередь запусков.
+- Бери верхний item своей роли с пустым `Blocked-by` и минимальным `Queue`.
+- Очередь **строго последовательная**: следующий стартует только когда предыдущий закрыт.
+- Дыры (foundation-first) гейтят всё выше: пока workstation DoD не зелёный — brainer стоит.
 
-| # | Кто запускается | Репо / scope | Задача |
-|---|---|---|---|
-| 1 | architect brainer (`-Scope main`) | brainer | разгрести дерево: спасти WIP обоих owner'ов (config.py+tests, vite.config.ts) в отдельные ветки/стэши, переключить на актуальный main, удалить смерженную ветку |
-| 2 | **user + owner-workstation** | devopser | e2e-прогон bootstrap на чистой среде (Sandbox / VM / свежая тачка) → закрыть дыры 1–2 + «≥10» в README/ps1 |
-| 3 | owner-backend (`-Scope backend`) | brainer | 🕳 config.py по брифу (один, на чистом main) |
-| 4 | owner-frontend (`-Scope frontend`) | brainer | 🕳 vite port → 3500 по брифу |
-| 5 | architect devopser (`-Scope main`) | devopser | infra-migration (стеки + registry) |
-| 6 | **фичевая разработка** | все | только когда таблица выше без открытых 🕳; параллельность — по явной записи architect'а |
+## Задача = issue
 
-User в этой схеме: запускает сессии по очереди выше + push/merge там, где просит architect.
+- Карточка открывается в issue репо-владельца: сверху 🧭 **TL;DR** (тейки для user, без деталей),
+  ниже — **бриф исполнителю** (факты / fix / verify).
+- Вопросы — **комментами** в issue (канал общения, история сохраняется).
+- User: запускает сессии по очереди борда + push/merge там, где просит architect.
+
+---
+
+_Markdown-таблица ROADMAP ретайрнута 2026-07-08 — заменена бордом (стоппер «roadmap неинформативен»).
+История стадий живёт в самих issue._
