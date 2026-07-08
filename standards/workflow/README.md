@@ -9,6 +9,7 @@
 - **`docs-hygiene.md`** — один источник на тему, `superseded`-пометки, без дата-археологии.
 - **`git-scope.md`** — scope коммита/PR = форма изменения (per-package / per-feature / cross-repo через контракт).
 - **`commit-cadence.md`** — когда коммитим (этапность: проверка→коммит) + pre-commit гейт (test+lint+build зелёные) + тайминг PR.
+- **`toolchain-pins.md`** — репо декларирует тулчейн пинами (`.python-version` / `[tool.uv] required-version` / `packageManager` self-managed pnpm / `engine-strict`); corepack — не опора; базовый слой машины — devopser workstation.
 
 ## Принцип
 
