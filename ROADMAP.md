@@ -9,20 +9,21 @@
 | Feature | Stage | Maturity | Owner-repo | Blocked-by | DoR | DoD | Link |
 |---|---|---|---|---|---|---|---|
 | brainer interface-MVP (фронт+бэк против контракта) | App | done | brainer | — | ✅ | ✅ | brainer PR#1 |
-| brainer repo-skeleton (pnpm+nx+uv+CI, эталон продукт-репо) | DevOps | ready | brainer | — | ✅ | ⬜ | brainer `briefs/repo-skeleton.md` |
+| brainer repo-skeleton (pnpm+nx+uv+CI, эталон продукт-репо) | DevOps | ready | brainer | **devopser workstation DoD (дыры 1–2)** | ✅ | ⬜ | brainer `briefs/repo-skeleton.md` |
 | commons foundation-first + toolchain-pins (правила) | Contract | done | commons | — | ✅ | ✅ | `standards/canon/principles/foundation-first.md` |
-| devopser workstation-bootstrap v1 | DevOps | done | devopser | — | ✅ | ✅ | devopser `briefs/workstation-bootstrap.md` |
-| devopser workstation амендмент №2 (corepack out, pnpm в слой) | DevOps | ready | devopser | — | ✅ | ⬜ | тот же бриф, §Амендмент №2 |
+| devopser workstation-bootstrap (v1 + амендмент №2 реализованы) | DevOps | doing | devopser | e2e на чистой машине (дыры 1–2 эскалации) | ✅ | ⬜ | devopser `workstation/escalation-bootstrap-gaps.md` |
 | devopser infra-migration (стеки из оракула + registry) | DevOps | ready | devopser | — | ✅ | ⬜ | devopser `briefs/infra-migration.md` |
 
 ## Очередь запусков (кто, что, после кого)
 
 Правило чтения: бери верхний item со своей ролью, у которого `Blocked-by` пуст.
+Иерархия базы (foundation-first): дыры devopser гейтят ВСЁ выше — brainer стоит,
+пока workstation DoD не зелёный.
 
 | # | Кто запускается | Репо / scope | Задача | После кого |
 |---|---|---|---|---|
-| 1 | architect brainer (`-Scope main`) | brainer | закоммитить оба брифа → выполнить repo-skeleton по шагам | ни после кого — можно сейчас |
-| 2 | owner-workstation (`-Scope workstation`) | devopser | переделать bootstrap по амендменту №2 | ни после кого — параллельно с №1 |
-| 3 | architect devopser (`-Scope main`) | devopser | infra-migration (стеки observability/gateway/storage + registry) | после №2 (чтобы workstation-канон не менялся под ногами) |
+| 1 | **user + owner-workstation** | devopser | e2e-прогон bootstrap на чистой машине (Windows Sandbox / VM / следующая свежая тачка) → закрыть дыры 1–2, поправить «10.x → ≥10» | ни после кого — СЕЙЧАС |
+| 2 | architect devopser (`-Scope main`) | devopser | infra-migration (стеки + registry) | параллельно №1 можно (тот же уровень базы) |
+| 3 | architect brainer (`-Scope main`) | brainer | закоммитить брифы → repo-skeleton | **после №1** (зелёный DoD workstation) |
 
 User в этой схеме: запускает сессии по очереди выше + push/merge там, где просит architect.
