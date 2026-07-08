@@ -13,6 +13,7 @@ uv/python → ручная установка + пути) и закрывшая 
 | сам uv | root `pyproject.toml` → `[tool.uv] required-version = ">=X.Y,<X.Z"` | uv отказывается работать не той версией (self-enforcing). Без пина — дрейф резолвера/lock-формата |
 | pnpm | `packageManager: "pnpm@x.y.z"` в root `package.json` | **сам pnpm ≥10** (`manage-package-manager-versions`, дефолт из коробки): любой pnpm 10.x скачивает и запускает запиненную версию |
 | node | `engines.node` + root `.npmrc` → `engine-strict=true` | pnpm. ⚠️ Без `engine-strict` engines — **warning, не гейт** |
+| Go | `go.mod` → директивы `go X.Y.Z` (точная) + `toolchain` | go ≥1.21 сам качает запиненный тулчейн; системный go — только базовый слой (bootstrap devopser). Канон сервиса — `../canon/languages/go.md` |
 
 ## ⚠️ Corepack — НЕ опора
 

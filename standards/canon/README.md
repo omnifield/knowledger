@@ -37,6 +37,10 @@
 - `registration.md` — 2-слойная регистрация (manifest + `Ui`-namespace) для рендерера/стора studio.
 - `tokens.md` — token-set (frozen); ноль raw-style; состояние в JS + токены.
 
+### `languages/` — языковые каноны (что не закрывается общими принципами)
+Брифы архитекторов на язык не опираются (функционал/архитектура/структура); язык-детали = owner + канон отсюда.
+- `go.md` — тулчейн-пины (go.mod toolchain), раскладка сервиса (cmd/internal/migrations, свой go.mod = граница extract), стиль (errors %w, context-first, интерфейс у потребителя), stdlib-first транспорт, goose+sqlc (types-from-schema), slog/env-only, table-driven+`-race`.
+
 ### `compliance/` — enforcement
 - `golden-rules.md` — правила + severity (`error` structural валит CI / `warn` cosmetic).
 - `linter.md` — как enforce'ится (AST-линтер, Vite-плагин, CI-gate).
