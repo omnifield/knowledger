@@ -48,12 +48,18 @@ func (a *API) Handler() http.Handler {
 	mux.Handle("GET /knowledger/workspaces/{ws}/tree", a.auth(a.handleGetWorkspaceTree))
 	mux.Handle("GET /knowledger/workspaces/{ws}/tags", a.auth(a.handleListTags))
 	mux.Handle("POST /knowledger/workspaces/{ws}/tags", a.auth(a.handleCreateTag))
+	// cross-product proposals: write into a foreign workspace's inbox; not the roadmap.
+	mux.Handle("POST /knowledger/workspaces/{ws}/proposals", a.auth(a.handleCreateProposal))
+	mux.Handle("GET /knowledger/workspaces/{ws}/inbox", a.auth(a.handleListInbox))
 
 	// nodes (dual-id: {key} = UUID или стабильный key)
 	mux.Handle("GET /knowledger/nodes/{key}", a.auth(a.handleGetNode))
 	mux.Handle("PATCH /knowledger/nodes/{key}", a.auth(a.handleUpdateNode))
 	mux.Handle("DELETE /knowledger/nodes/{key}", a.auth(a.handleDeleteNode))
 	mux.Handle("GET /knowledger/nodes/{key}/children", a.auth(a.handleListChildren))
+	// proposal gate: promote into the roadmap (accept) or reject (decline).
+	mux.Handle("POST /knowledger/nodes/{key}/accept", a.auth(a.handleAcceptProposal))
+	mux.Handle("POST /knowledger/nodes/{key}/decline", a.auth(a.handleDeclineProposal))
 	mux.Handle("GET /knowledger/nodes/{key}/tree", a.auth(a.handleGetNodeTree))
 	mux.Handle("GET /knowledger/nodes/{key}/refs", a.auth(a.handleListRefs))
 	mux.Handle("POST /knowledger/nodes/{key}/refs", a.auth(a.handleCreateRef))

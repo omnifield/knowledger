@@ -29,6 +29,9 @@ type Node struct {
 	Ord         string
 	CreatedAt   string
 	UpdatedAt   string
+	Origin      string
+	ProposedBy  string
+	SourceWs    string
 }
 
 type NodeTag struct {

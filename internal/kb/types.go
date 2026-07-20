@@ -29,6 +29,11 @@ type Node struct {
 	Ord         string  `json:"ord"`
 	CreatedAt   string  `json:"created_at"`
 	UpdatedAt   string  `json:"updated_at"`
+	// Origin: "native" (roadmap/tree node), "proposal" (cross-product suggestion in the inbox,
+	// not yet accepted) or "declined". ProposedBy/SourceWs carry a proposal's provenance.
+	Origin     string `json:"origin"`
+	ProposedBy string `json:"proposed_by,omitempty"`
+	SourceWs   string `json:"source_ws,omitempty"`
 }
 
 // Ref — a forward reference edge from one node to another. A single edge table

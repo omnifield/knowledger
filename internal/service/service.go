@@ -119,6 +119,7 @@ func mapNode(n store.Node) kb.Node {
 		ParentID: nullToPtr(n.ParentID), Kind: nullToPtr(n.Kind),
 		Title: n.Title, Body: n.Body, Ord: n.Ord,
 		CreatedAt: n.CreatedAt, UpdatedAt: n.UpdatedAt,
+		Origin: n.Origin, ProposedBy: n.ProposedBy, SourceWs: n.SourceWs,
 	}
 }
 

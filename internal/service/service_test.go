@@ -105,3 +105,63 @@ func TestServiceInvariants(t *testing.T) {
 		t.Fatalf("get missing err = %v, want ErrNotFound", err)
 	}
 }
+
+// Cross-product предложка: карантин в inbox (вне дерева) -> accept приземляет в роадмап; decline
+// убирает из inbox; accept не-предложки -> валидация.
+func TestProposalsFlow(t *testing.T) {
+	ctx := context.Background()
+	svc := newSvc(t)
+
+	if _, err := svc.CreateWorkspace(ctx, service.CreateWorkspaceInput{Key: "KNOW", Name: "KB"}); err != nil {
+		t.Fatalf("create workspace: %v", err)
+	}
+	root, _ := svc.CreateNode(ctx, "KNOW", service.CreateNodeInput{Title: "root"})
+
+	prop, err := svc.CreateProposal(ctx, "KNOW", service.CreateProposalInput{
+		Title: "article idea", SourceWs: "DEV", Actor: "devopser",
+	})
+	if err != nil {
+		t.Fatalf("create proposal: %v", err)
+	}
+	if prop.Origin != "proposal" || prop.ProposedBy != "devopser" || prop.SourceWs != "DEV" {
+		t.Fatalf("proposal provenance wrong: %+v", prop)
+	}
+
+	// В inbox — есть; в роадмап-дереве — нет.
+	inbox, _ := svc.ListInbox(ctx, "KNOW")
+	if len(inbox) != 1 || inbox[0].ID != prop.ID {
+		t.Fatalf("inbox = %+v, want the proposal", inbox)
+	}
+	tree, _ := svc.GetWorkspaceTree(ctx, "KNOW", -1)
+	for _, n := range tree {
+		if n.ID == prop.ID {
+			t.Fatal("proposal leaked into the roadmap tree")
+		}
+	}
+
+	// Accept -> в роадмап под root, origin native.
+	accepted, err := svc.AcceptProposal(ctx, prop.Key, service.AcceptInput{ParentID: &root.Key, Actor: "know"})
+	if err != nil {
+		t.Fatalf("accept: %v", err)
+	}
+	if accepted.Origin != "native" || accepted.ParentID == nil || *accepted.ParentID != root.ID {
+		t.Fatalf("accepted node wrong: %+v", accepted)
+	}
+	if inbox, _ := svc.ListInbox(ctx, "KNOW"); len(inbox) != 0 {
+		t.Fatalf("inbox after accept = %+v, want empty", inbox)
+	}
+
+	// Accept не-предложки (обычный узел) -> валидация.
+	if _, err := svc.AcceptProposal(ctx, root.Key, service.AcceptInput{}); !errors.Is(err, service.ErrValidation) {
+		t.Fatalf("accept non-proposal err = %v, want ErrValidation", err)
+	}
+
+	// Decline убирает из inbox.
+	p2, _ := svc.CreateProposal(ctx, "KNOW", service.CreateProposalInput{Title: "reject me", Actor: "x"})
+	if _, err := svc.DeclineProposal(ctx, p2.Key, service.DeclineInput{Comment: "nope", Actor: "know"}); err != nil {
+		t.Fatalf("decline: %v", err)
+	}
+	if inbox, _ := svc.ListInbox(ctx, "KNOW"); len(inbox) != 0 {
+		t.Fatalf("inbox after decline = %+v, want empty", inbox)
+	}
+}
