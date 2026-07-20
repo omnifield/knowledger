@@ -29,8 +29,9 @@
   "mounts": [
     "source=omnifield-pnpm-store,target=/home/vscode/.local/share/pnpm/store,type=volume",
     "source=omnifield-secrets,target=/home/vscode/.secrets,type=volume",
-    "source=omnifield-registry,target=/omnifield-registry,type=volume"
+    "source=omnifield-registry,target=/omnifield-registry,type=volume",
+    "source=knowledger-data,target=/data/knowledger,type=volume"
   ],
-  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.local/share/pnpm/store /home/vscode/.secrets && sudo chown vscode:vscode /omnifield-registry && mkdir -p \"$CLAUDE_CONFIG_DIR\" && { [ -f \"$CLAUDE_CONFIG_DIR/.claude.json\" ] || printf '%s\\n' '{\"hasCompletedOnboarding\":true,\"hasTrustDialogAccepted\":true,\"theme\":\"dark\"}' > \"$CLAUDE_CONFIG_DIR/.claude.json\"; }",
+  "postCreateCommand": "sudo chown -R vscode:vscode /home/vscode/.local/share/pnpm/store /home/vscode/.secrets && sudo chown vscode:vscode /omnifield-registry && sudo mkdir -p /data/knowledger && sudo chown -R vscode:vscode /data/knowledger && mkdir -p \"$CLAUDE_CONFIG_DIR\" && { [ -f \"$CLAUDE_CONFIG_DIR/.claude.json\" ] || printf '%s\\n' '{\"hasCompletedOnboarding\":true,\"hasTrustDialogAccepted\":true,\"theme\":\"dark\"}' > \"$CLAUDE_CONFIG_DIR/.claude.json\"; }",
   "postStartCommand": "node scripts/devbox-publish.mjs; node scripts/devbox-services.mjs up"
 }

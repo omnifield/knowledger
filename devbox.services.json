@@ -1,1 +1,10 @@
-[]
+[
+  {
+    "name": "backend",
+    "cwd": ".",
+    "command": "env KNOWLEDGER_PORT=8040 KNOWLEDGER_DB=/data/knowledger/knowledger.db go run ./cmd/knowledger",
+    "port": 8040,
+    "healthUrl": "http://localhost:8040/knowledger/healthz",
+    "probeTimeoutMs": 120000
+  }
+]
