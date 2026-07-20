@@ -1,0 +1,16 @@
+apiVersion: omnifield.dev/v1
+name: knowledger
+type: backend            # fullstack — когда заведём фронт-маршрут (KNOW-10 приземлён, промоушен отдельным шагом)
+title: Knowledger
+description: KB-движок Omnifield
+reach:
+  routes:
+    # Backend (Go) — нативный префикс /knowledger/; дверь на /api/knowledger/ снимает /api →
+    # бьёт в knowledger:8040/knowledger/... (как tasker под /tasker/). Порт = фактический
+    # listen бэка ВНУТРИ контейнера (single-origin, свой контейнер — глобально не согласуем).
+    - path: /api/knowledger/
+      port: 8040
+      service: knowledger
+integration:
+  scopes: [main]
+  spawnEligible: false
