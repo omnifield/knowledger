@@ -15,6 +15,10 @@ INSERT INTO node_tags (node_id, tag_id) VALUES (?, ?);
 -- name: RemoveNodeTag :exec
 DELETE FROM node_tags WHERE node_id = ? AND tag_id = ?;
 
+-- All tag memberships of a node -- cleaned when the node is deleted.
+-- name: DeleteNodeTagsForNode :exec
+DELETE FROM node_tags WHERE node_id = ?;
+
 -- Tags applied to a node (join across the m2m).
 -- name: ListNodeTags :many
 SELECT t.* FROM tags t

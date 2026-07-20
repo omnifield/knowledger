@@ -42,6 +42,16 @@ func (q *Queries) CreateRevision(ctx context.Context, arg CreateRevisionParams) 
 	return i, err
 }
 
+const deleteRevisionsForNode = `-- name: DeleteRevisionsForNode :exec
+DELETE FROM revisions WHERE node_id = ?
+`
+
+// All revisions of a node -- cleaned when the node is deleted.
+func (q *Queries) DeleteRevisionsForNode(ctx context.Context, nodeID string) error {
+	_, err := q.db.ExecContext(ctx, deleteRevisionsForNode, nodeID)
+	return err
+}
+
 const getRevision = `-- name: GetRevision :one
 SELECT id, node_id, snapshot, meta, created_at FROM revisions WHERE id = ?
 `

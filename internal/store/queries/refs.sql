@@ -14,3 +14,7 @@ SELECT * FROM refs WHERE to_node = ? ORDER BY created_at, id;
 
 -- name: DeleteRef :exec
 DELETE FROM refs WHERE id = ?;
+
+-- All edges touching a node (either endpoint) -- cleaned when the node is deleted.
+-- name: DeleteRefsForNode :exec
+DELETE FROM refs WHERE from_node = ? OR to_node = ?;
