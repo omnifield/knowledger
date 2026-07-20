@@ -6,7 +6,6 @@ func TestValidRefKind(t *testing.T) {
 	t.Parallel()
 	cases := map[string]bool{
 		RefLink:       true,
-		RefTag:        true,
 		RefTransclude: true,
 		RefRelates:    true,
 		RefBlocks:     true,
@@ -15,6 +14,7 @@ func TestValidRefKind(t *testing.T) {
 		"":            false,
 		"bogus":       false,
 		"Link":        false,
+		"tag":         false, // tags are a separate m2m, not a ref kind
 	}
 	for k, want := range cases {
 		if got := ValidRefKind(k); got != want {
