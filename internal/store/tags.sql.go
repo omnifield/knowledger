@@ -53,6 +53,16 @@ func (q *Queries) CreateTag(ctx context.Context, arg CreateTagParams) (Tag, erro
 	return i, err
 }
 
+const deleteNodeTagsForNode = `-- name: DeleteNodeTagsForNode :exec
+DELETE FROM node_tags WHERE node_id = ?
+`
+
+// All tag memberships of a node -- cleaned when the node is deleted.
+func (q *Queries) DeleteNodeTagsForNode(ctx context.Context, nodeID string) error {
+	_, err := q.db.ExecContext(ctx, deleteNodeTagsForNode, nodeID)
+	return err
+}
+
 const getTag = `-- name: GetTag :one
 SELECT id, workspace_id, name, created_at FROM tags WHERE id = ?
 `

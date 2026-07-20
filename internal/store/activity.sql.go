@@ -45,6 +45,16 @@ func (q *Queries) CreateActivity(ctx context.Context, arg CreateActivityParams) 
 	return i, err
 }
 
+const deleteActivityForNode = `-- name: DeleteActivityForNode :exec
+DELETE FROM activity WHERE node_id = ?
+`
+
+// All timeline entries of a node -- cleaned when the node is deleted.
+func (q *Queries) DeleteActivityForNode(ctx context.Context, nodeID string) error {
+	_, err := q.db.ExecContext(ctx, deleteActivityForNode, nodeID)
+	return err
+}
+
 const listActivity = `-- name: ListActivity :many
 SELECT id, node_id, actor, kind, data, created_at FROM activity WHERE node_id = ? ORDER BY created_at, id
 `

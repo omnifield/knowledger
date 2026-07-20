@@ -51,6 +51,21 @@ func (q *Queries) DeleteRef(ctx context.Context, id string) error {
 	return err
 }
 
+const deleteRefsForNode = `-- name: DeleteRefsForNode :exec
+DELETE FROM refs WHERE from_node = ? OR to_node = ?
+`
+
+type DeleteRefsForNodeParams struct {
+	FromNode string
+	ToNode   string
+}
+
+// All edges touching a node (either endpoint) -- cleaned when the node is deleted.
+func (q *Queries) DeleteRefsForNode(ctx context.Context, arg DeleteRefsForNodeParams) error {
+	_, err := q.db.ExecContext(ctx, deleteRefsForNode, arg.FromNode, arg.ToNode)
+	return err
+}
+
 const listBacklinks = `-- name: ListBacklinks :many
 SELECT id, from_node, to_node, kind, created_at FROM refs WHERE to_node = ? ORDER BY created_at, id
 `
