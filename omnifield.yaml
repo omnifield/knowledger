@@ -1,16 +1,20 @@
 apiVersion: omnifield.dev/v1
 name: knowledger
-type: backend            # fullstack — когда заведём фронт-маршрут (KNOW-10 приземлён, промоушен отдельным шагом)
+type: fullstack           # фронт-маршрут приземлён (KNOW-11): UI на /knowledger/, API на /api/knowledger/
 title: Knowledger
 description: KB-движок Omnifield
 reach:
   routes:
+    # Фронт (vite+solid, read-first база знаний) — pass-through, SPA под base "/knowledger/"
+    # (дверь: 301 /knowledger → /knowledger/). Порт = фактический vite-listen ВНУТРИ контейнера
+    # knowledger (0.0.0.0:5173, server.host=true). Канон двери (DEVOPSER-136): UI-вход = /<name>/.
+    - path: /knowledger
+      port: 5173
     # Backend (Go) — нативный префикс /knowledger/; дверь на /api/knowledger/ снимает /api →
     # бьёт в knowledger:8040/knowledger/... (как tasker под /tasker/). Порт = фактический
     # listen бэка ВНУТРИ контейнера (single-origin, свой контейнер — глобально не согласуем).
-    - path: /api/knowledger/
+    - path: /api/knowledger
       port: 8040
-      service: knowledger
 integration:
   scopes: [main]
   spawnEligible: false
