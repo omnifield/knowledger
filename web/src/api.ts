@@ -109,6 +109,8 @@ async function post<T>(path: string, body: unknown): Promise<T> {
 
 export const listWorkspaces = () => get<Workspace[]>("/workspaces");
 export const workspaceTree = (ws: string) => get<TreeNode[]>(`/workspaces/${ws}/tree`);
+// getNode — один узел по стабильному key (для deep-link из URL, когда клика по дереву не было).
+export const getNode = (key: string) => get<NodeDTO>(`/nodes/${key}`);
 export const nodeRefs = (key: string) => get<Ref[]>(`/nodes/${key}/refs`);
 export const nodeBacklinks = (key: string) => get<Ref[]>(`/nodes/${key}/backlinks`);
 export const nodeTags = (key: string) => get<Tag[]>(`/nodes/${key}/tags`);
