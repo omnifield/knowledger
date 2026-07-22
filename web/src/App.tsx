@@ -25,6 +25,10 @@ export function App() {
   const [tree, { refetch: refetchTree }] = createResource(selected, workspaceTree);
   const [inbox, { refetch: refetchInbox }] = createResource(selected, listInbox);
 
+  // Выбранное пространство целиком — чтобы показать его описание в правой панели,
+  // пока узел не выбран (клик по разделу -> описание раздела, а не пустой сайдбар).
+  const activeWs = () => workspaces()?.find((w) => w.key === selected());
+
   // Смена пространства сбрасывает выбранный узел (он из другого дерева) и ошибку действия.
   createEffect(() => {
     selected();
@@ -147,9 +151,27 @@ export function App() {
           <Show
             when={sel()}
             fallback={
-              <aside class="detail empty">
-                <p class="muted">выберите узел — тело, теги, ссылки, история</p>
-              </aside>
+              <Show
+                when={activeWs()}
+                fallback={
+                  <aside class="detail empty">
+                    <p class="muted">выберите узел — тело, теги, ссылки, история</p>
+                  </aside>
+                }
+              >
+                {/* Узел не выбран, но раздел выбран — показываем описание раздела. */}
+                {(ws) => (
+                  <aside class="detail">
+                    <div class="detail-head">
+                      <span class="key">{ws().key}</span>
+                    </div>
+                    <h2>{ws().name}</h2>
+                    <Show when={ws().description} fallback={<p class="muted">нет описания раздела</p>}>
+                      <p class="body">{ws().description}</p>
+                    </Show>
+                  </aside>
+                )}
+              </Show>
             }
           >
             {(node) => <NodeDetail node={node()} />}
