@@ -306,6 +306,17 @@ h3 {
   font-size: 0.75rem;
   color: var(--muted);
 }
+.ref-node {
+  color: var(--accent);
+  text-decoration: none;
+}
+.ref-node:hover {
+  text-decoration: underline;
+}
+.ref-node .key {
+  font-family: ui-monospace, monospace;
+  font-size: 0.75rem;
+}
 .derived {
   font-size: 0.68rem;
   color: var(--green);

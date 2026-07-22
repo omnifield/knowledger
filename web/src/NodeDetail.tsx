@@ -1,7 +1,23 @@
 import { createResource, For, Show } from "solid-js";
 import type { NodeDTO } from "./api";
-import { nodeActivity, nodeBacklinks, nodeRefs, nodeTags } from "./api";
+import { getNode, nodeActivity, nodeBacklinks, nodeRefs, nodeTags } from "./api";
 import { kindLabel, shortId } from "./format";
+
+// RefTarget — резолвит UUID ребра в узел (dual-id) и рендерит кликабельную ссылку `#/<KEY>`
+// с key+title. Пока грузится — усечённый UUID как заглушка. Так блок «Ссылки» согласован
+// с URL-навигацией (key, не сырой айдишник) и по ссылкам можно переходить.
+function RefTarget(props: { id: string }) {
+  const [node] = createResource(() => props.id, getNode);
+  return (
+    <Show when={node()} fallback={<span class="mono">{shortId(props.id)}</span>}>
+      {(n) => (
+        <a class="ref-node" href={`#/${n().key}`}>
+          <span class="key">{n().key}</span> {n().title}
+        </a>
+      )}
+    </Show>
+  );
+}
 
 // NodeDetail — панель выбранного узла: тело, теги, исходящие ссылки, обратные ссылки (derived) и
 // история. Каждый список — свой resource, перезагружается при смене выбранного узла (по key).
@@ -44,7 +60,7 @@ export function NodeDetail(props: { node: NodeDTO }) {
             <For each={refs()}>
               {(r) => (
                 <li>
-                  <span class="ref-kind">{r.kind}</span> → <span class="mono">{shortId(r.to_node)}</span>
+                  <span class="ref-kind">{r.kind}</span> → <RefTarget id={r.to_node} />
                 </li>
               )}
             </For>
@@ -61,7 +77,7 @@ export function NodeDetail(props: { node: NodeDTO }) {
             <For each={backlinks()}>
               {(r) => (
                 <li>
-                  <span class="mono">{shortId(r.from_node)}</span> <span class="ref-kind">{r.kind}</span> →
+                  <RefTarget id={r.from_node} /> <span class="ref-kind">{r.kind}</span> →
                 </li>
               )}
             </For>
