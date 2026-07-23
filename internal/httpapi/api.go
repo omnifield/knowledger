@@ -52,6 +52,12 @@ func (a *API) Handler() http.Handler {
 	mux.Handle("POST /knowledger/workspaces/{ws}/proposals", a.auth(a.handleCreateProposal))
 	mux.Handle("GET /knowledger/workspaces/{ws}/inbox", a.auth(a.handleListInbox))
 
+	// groups — сайдбар-папки над workspace (вложенные; членство ws через PATCH group_id).
+	mux.Handle("GET /knowledger/groups", a.auth(a.handleListGroups))
+	mux.Handle("POST /knowledger/groups", a.auth(a.handleCreateGroup))
+	mux.Handle("PATCH /knowledger/groups/{id}", a.auth(a.handleUpdateGroup))
+	mux.Handle("DELETE /knowledger/groups/{id}", a.auth(a.handleDeleteGroup))
+
 	// nodes (dual-id: {key} = UUID или стабильный key)
 	mux.Handle("GET /knowledger/nodes/{key}", a.auth(a.handleGetNode))
 	mux.Handle("PATCH /knowledger/nodes/{key}", a.auth(a.handleUpdateNode))

@@ -109,7 +109,15 @@ func (s *Service) resolveWorkspace(ctx context.Context, q *store.Queries, idOrKe
 func mapWorkspace(w store.Workspace) kb.Workspace {
 	return kb.Workspace{
 		ID: w.ID, Key: w.Key, Name: w.Name, Description: w.Description,
+		GroupID:   nullToPtr(w.GroupID),
 		CreatedAt: w.CreatedAt, UpdatedAt: w.UpdatedAt,
+	}
+}
+
+func mapGroup(g store.Group) kb.Group {
+	return kb.Group{
+		ID: g.ID, Name: g.Name, ParentID: nullToPtr(g.ParentID),
+		Ord: g.Ord, CreatedAt: g.CreatedAt, UpdatedAt: g.UpdatedAt,
 	}
 }
 

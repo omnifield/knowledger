@@ -87,10 +87,13 @@ func (s *Service) ListWorkspaces(ctx context.Context) ([]kb.Workspace, error) {
 	return out, err
 }
 
-// UpdateWorkspaceInput — частичный PATCH имени/описания.
+// UpdateWorkspaceInput — частичный PATCH имени/описания/группы. GroupIDSet отличает «поле не
+// прислано» от «null» (снять группу -> в корень сайдбара).
 type UpdateWorkspaceInput struct {
 	Name        *string
 	Description *string
+	GroupIDSet  bool
+	GroupID     *string
 }
 
 // UpdateWorkspace применяет частичный PATCH.
@@ -116,6 +119,21 @@ func (s *Service) UpdateWorkspace(ctx context.Context, idOrKey string, in Update
 		})
 		if err != nil {
 			return err
+		}
+		// Назначение/снятие группы — отдельным апдейтом в той же Tx (валидируем существование группы).
+		if in.GroupIDSet {
+			g := ptrToNull(in.GroupID)
+			if g.Valid {
+				if _, err := s.getGroup(ctx, q, g.String); err != nil {
+					return err
+				}
+			}
+			updated, err = q.SetWorkspaceGroup(ctx, store.SetWorkspaceGroupParams{
+				GroupID: g, UpdatedAt: s.nowStr(), ID: w.ID,
+			})
+			if err != nil {
+				return err
+			}
 		}
 		out = mapWorkspace(updated)
 		return nil

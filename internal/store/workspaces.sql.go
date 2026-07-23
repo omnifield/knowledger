@@ -7,6 +7,7 @@ package store
 
 import (
 	"context"
+	"database/sql"
 )
 
 const bumpWorkspaceNodeSeq = `-- name: BumpWorkspaceNodeSeq :one
@@ -34,7 +35,7 @@ func (q *Queries) BumpWorkspaceNodeSeq(ctx context.Context, arg BumpWorkspaceNod
 const createWorkspace = `-- name: CreateWorkspace :one
 INSERT INTO workspaces (id, key, name, description, node_seq, created_at, updated_at)
 VALUES (?, ?, ?, ?, 0, ?, ?)
-RETURNING id, "key", name, description, node_seq, created_at, updated_at
+RETURNING id, "key", name, description, node_seq, created_at, updated_at, group_id
 `
 
 type CreateWorkspaceParams struct {
@@ -64,12 +65,13 @@ func (q *Queries) CreateWorkspace(ctx context.Context, arg CreateWorkspaceParams
 		&i.NodeSeq,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.GroupID,
 	)
 	return i, err
 }
 
 const getWorkspace = `-- name: GetWorkspace :one
-SELECT id, "key", name, description, node_seq, created_at, updated_at FROM workspaces WHERE id = ?
+SELECT id, "key", name, description, node_seq, created_at, updated_at, group_id FROM workspaces WHERE id = ?
 `
 
 func (q *Queries) GetWorkspace(ctx context.Context, id string) (Workspace, error) {
@@ -83,12 +85,13 @@ func (q *Queries) GetWorkspace(ctx context.Context, id string) (Workspace, error
 		&i.NodeSeq,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.GroupID,
 	)
 	return i, err
 }
 
 const getWorkspaceByKey = `-- name: GetWorkspaceByKey :one
-SELECT id, "key", name, description, node_seq, created_at, updated_at FROM workspaces WHERE key = ?
+SELECT id, "key", name, description, node_seq, created_at, updated_at, group_id FROM workspaces WHERE key = ?
 `
 
 func (q *Queries) GetWorkspaceByKey(ctx context.Context, key string) (Workspace, error) {
@@ -102,12 +105,13 @@ func (q *Queries) GetWorkspaceByKey(ctx context.Context, key string) (Workspace,
 		&i.NodeSeq,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.GroupID,
 	)
 	return i, err
 }
 
 const listWorkspaces = `-- name: ListWorkspaces :many
-SELECT id, "key", name, description, node_seq, created_at, updated_at FROM workspaces ORDER BY created_at, key
+SELECT id, "key", name, description, node_seq, created_at, updated_at, group_id FROM workspaces ORDER BY created_at, key
 `
 
 func (q *Queries) ListWorkspaces(ctx context.Context) ([]Workspace, error) {
@@ -127,6 +131,7 @@ func (q *Queries) ListWorkspaces(ctx context.Context) ([]Workspace, error) {
 			&i.NodeSeq,
 			&i.CreatedAt,
 			&i.UpdatedAt,
+			&i.GroupID,
 		); err != nil {
 			return nil, err
 		}
@@ -141,11 +146,41 @@ func (q *Queries) ListWorkspaces(ctx context.Context) ([]Workspace, error) {
 	return items, nil
 }
 
+const setWorkspaceGroup = `-- name: SetWorkspaceGroup :one
+UPDATE workspaces
+SET group_id = ?, updated_at = ?
+WHERE id = ?
+RETURNING id, "key", name, description, node_seq, created_at, updated_at, group_id
+`
+
+type SetWorkspaceGroupParams struct {
+	GroupID   sql.NullString
+	UpdatedAt string
+	ID        string
+}
+
+// Assign/clear a workspace's sidebar group (organizational layer). NULL -> ungrouped.
+func (q *Queries) SetWorkspaceGroup(ctx context.Context, arg SetWorkspaceGroupParams) (Workspace, error) {
+	row := q.db.QueryRowContext(ctx, setWorkspaceGroup, arg.GroupID, arg.UpdatedAt, arg.ID)
+	var i Workspace
+	err := row.Scan(
+		&i.ID,
+		&i.Key,
+		&i.Name,
+		&i.Description,
+		&i.NodeSeq,
+		&i.CreatedAt,
+		&i.UpdatedAt,
+		&i.GroupID,
+	)
+	return i, err
+}
+
 const updateWorkspace = `-- name: UpdateWorkspace :one
 UPDATE workspaces
 SET name = ?, description = ?, updated_at = ?
 WHERE id = ?
-RETURNING id, "key", name, description, node_seq, created_at, updated_at
+RETURNING id, "key", name, description, node_seq, created_at, updated_at, group_id
 `
 
 type UpdateWorkspaceParams struct {
@@ -171,6 +206,7 @@ func (q *Queries) UpdateWorkspace(ctx context.Context, arg UpdateWorkspaceParams
 		&i.NodeSeq,
 		&i.CreatedAt,
 		&i.UpdatedAt,
+		&i.GroupID,
 	)
 	return i, err
 }

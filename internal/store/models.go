@@ -17,6 +17,15 @@ type Activity struct {
 	CreatedAt string
 }
 
+type Group struct {
+	ID        string
+	Name      string
+	ParentID  sql.NullString
+	Ord       string
+	CreatedAt string
+	UpdatedAt string
+}
+
 type Node struct {
 	ID          string
 	WorkspaceID string
@@ -70,4 +79,5 @@ type Workspace struct {
 	NodeSeq     int64
 	CreatedAt   string
 	UpdatedAt   string
+	GroupID     sql.NullString
 }
