@@ -1,6 +1,7 @@
 package httpapi
 
 import (
+	"bytes"
 	"encoding/json"
 	"net/http"
 	"strconv"
@@ -71,12 +72,90 @@ func (a *API) handleUpdateWorkspace(w http.ResponseWriter, r *http.Request) {
 		}
 		in.Description = &s
 	}
+	if v, ok := raw["group_id"]; ok {
+		in.GroupIDSet = true
+		in.GroupID = asNullableString(v) // null -> снять группу (в корень сайдбара)
+	}
 	ws, err := a.svc.UpdateWorkspace(r.Context(), r.PathValue("ws"), in)
 	if err != nil {
 		a.writeServiceError(w, r, err)
 		return
 	}
 	writeJSON(w, http.StatusOK, ws)
+}
+
+// --- groups (сайдбар-папки над workspace; UUID-адресация) -------------------
+
+func (a *API) handleListGroups(w http.ResponseWriter, r *http.Request) {
+	gs, err := a.svc.ListGroups(r.Context())
+	if err != nil {
+		a.writeServiceError(w, r, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, gs)
+}
+
+func (a *API) handleCreateGroup(w http.ResponseWriter, r *http.Request) {
+	var body struct {
+		Name     string  `json:"name"`
+		ParentID *string `json:"parent_id"`
+		Ord      string  `json:"ord"`
+	}
+	if err := decodeJSON(r, &body); err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	g, err := a.svc.CreateGroup(r.Context(), service.CreateGroupInput{
+		Name: body.Name, ParentID: body.ParentID, Ord: body.Ord,
+	})
+	if err != nil {
+		a.writeServiceError(w, r, err)
+		return
+	}
+	writeJSON(w, http.StatusCreated, g)
+}
+
+func (a *API) handleUpdateGroup(w http.ResponseWriter, r *http.Request) {
+	var raw map[string]json.RawMessage
+	if err := decodeJSON(r, &raw); err != nil {
+		writeError(w, http.StatusBadRequest, err.Error())
+		return
+	}
+	var in service.UpdateGroupInput
+	if v, ok := raw["name"]; ok {
+		s, err := asString(v)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "name must be a string")
+			return
+		}
+		in.Name = &s
+	}
+	if v, ok := raw["ord"]; ok {
+		s, err := asString(v)
+		if err != nil {
+			writeError(w, http.StatusBadRequest, "ord must be a string")
+			return
+		}
+		in.Ord = &s
+	}
+	if v, ok := raw["parent_id"]; ok {
+		in.ParentIDSet = true
+		in.ParentID = asNullableString(v) // null -> в корень
+	}
+	g, err := a.svc.UpdateGroup(r.Context(), r.PathValue("id"), in)
+	if err != nil {
+		a.writeServiceError(w, r, err)
+		return
+	}
+	writeJSON(w, http.StatusOK, g)
+}
+
+func (a *API) handleDeleteGroup(w http.ResponseWriter, r *http.Request) {
+	if err := a.svc.DeleteGroup(r.Context(), r.PathValue("id")); err != nil {
+		a.writeServiceError(w, r, err)
+		return
+	}
+	w.WriteHeader(http.StatusNoContent)
 }
 
 // --- nodes -----------------------------------------------------------------
@@ -453,7 +532,12 @@ func asString(raw json.RawMessage) (string, error) {
 }
 
 // asNullableString: JSON null -> nil (очистка поля); JSON-строка -> *string. Прочее -> nil.
+// ВАЖНО: json.Unmarshal(`null`, &string) НЕ ошибка и оставляет "" — поэтому null ловим явно,
+// иначе очистка (kind/parent_id/group_id) молча ставила бы пустую строку вместо NULL.
 func asNullableString(raw json.RawMessage) *string {
+	if bytes.Equal(bytes.TrimSpace(raw), []byte("null")) {
+		return nil
+	}
 	var s string
 	if err := json.Unmarshal(raw, &s); err != nil {
 		return nil

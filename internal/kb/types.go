@@ -3,13 +3,28 @@ package kb
 import "encoding/json"
 
 // Workspace — a scope tier: a product OR a concern. Key is short and stable.
+// GroupID is an optional sidebar group membership (organizational layer only —
+// it never touches the node tree or content); nil means ungrouped (sidebar root).
 type Workspace struct {
-	ID          string `json:"id"`
-	Key         string `json:"key"`
-	Name        string `json:"name"`
-	Description string `json:"description"`
-	CreatedAt   string `json:"created_at"`
-	UpdatedAt   string `json:"updated_at"`
+	ID          string  `json:"id"`
+	Key         string  `json:"key"`
+	Name        string  `json:"name"`
+	Description string  `json:"description"`
+	GroupID     *string `json:"group_id"`
+	CreatedAt   string  `json:"created_at"`
+	UpdatedAt   string  `json:"updated_at"`
+}
+
+// Group — a nestable sidebar folder over workspaces (organizational layer only,
+// not knowledge). ParentID (self-ref) gives arbitrary nesting; nil is a root
+// group. Ord is a fractional sibling index. Reusable mech (MECH-4).
+type Group struct {
+	ID        string  `json:"id"`
+	Name      string  `json:"name"`
+	ParentID  *string `json:"parent_id"`
+	Ord       string  `json:"ord"`
+	CreatedAt string  `json:"created_at"`
+	UpdatedAt string  `json:"updated_at"`
 }
 
 // Node — a recursive, type-less content node. Documents, sections and articles

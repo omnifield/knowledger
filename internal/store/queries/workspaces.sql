@@ -18,6 +18,13 @@ SET name = ?, description = ?, updated_at = ?
 WHERE id = ?
 RETURNING *;
 
+-- Assign/clear a workspace's sidebar group (organizational layer). NULL -> ungrouped.
+-- name: SetWorkspaceGroup :one
+UPDATE workspaces
+SET group_id = ?, updated_at = ?
+WHERE id = ?
+RETURNING *;
+
 -- Transactional per-workspace node.seq counter (monotonic, never decreases).
 -- RETURNING is supported by both modernc SQLite and pgx/PG. Called inside a Tx
 -- together with the nodes INSERT so key allocation is atomic.
